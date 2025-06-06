@@ -3,6 +3,7 @@ import re
 from datetime import datetime, timedelta
 import unicodedata
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
 
@@ -42,7 +43,7 @@ def quitar_tildes(s):
 
 # --- Carga de Datos ---
 try:
-    df = pd.read_excel(r"C:\Users\sebas\OneDrive\Documentos\BASE\ejemplo.xlsx")
+    df = pd.read_excel("ejemplo.xlsx")
 except FileNotFoundError:
     print("Error: archivo no encontrado.")
     exit()
@@ -172,4 +173,5 @@ def consultar():
     return jsonify({"respuesta": respuesta})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
